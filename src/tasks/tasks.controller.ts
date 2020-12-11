@@ -2,7 +2,7 @@ import {
   Body,
   Controller,
   Delete,
-  Get,
+  Get, Logger,
   Param,
   ParseIntPipe,
   Patch,
@@ -24,13 +24,14 @@ import { User } from '../auth/user.entity';
 @Controller('tasks')
 @UseGuards(AuthGuard())
 export class TasksController {
+  private logger = new Logger('TaskController');
   constructor(private taskService: TasksService) {}
-
   @Get()
   getTask(
     @Query(ValidationPipe) filterDto: GetTasksFilterDto,
-    @GetUser() user: User
-  ): Promise<Task []> {
+    @GetUser() user: User,
+  ): Promise<Task[]> {
+    this.logger.verbose(`User ${user.username} retrieving all user`)
     return this.taskService.getTasks(filterDto, user);
   }
 
