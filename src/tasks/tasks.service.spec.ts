@@ -87,13 +87,13 @@ describe('TaskService', () => {
 
   describe('deleteTask', () => {
     it('should taskRepository.delete deletes task', async () => {
-      taskRepository.delete.mockResolvedValue({ affected: 1 });
+      taskRepository.delete.mockResolvedValue({ affected: 1 } as any);
       expect(taskRepository.delete).not.toHaveBeenCalled();
       await tasksService.delete(1, mockUser);
       expect(taskRepository.delete).toHaveBeenCalled();
     });
-    it('should throw an exception', async () => {
-      taskRepository.delete.mockResolvedValue({ affected: 0 });
+    it('should throw an exception', () => {
+      taskRepository.delete.mockResolvedValue({ affected: 0 } as any);
       expect(tasksService.delete).rejects.toThrow(NotFoundException);
     });
   });
@@ -104,9 +104,14 @@ describe('TaskService', () => {
       tasksService.getTaskById = jest.fn().mockReturnValue({
         status: TaskStatus.OPEN,
         save,
-      })
-      const result = await tasksService.updateTaskStatus(1, TaskStatus.DONE, mockUser);
+      });
+      const result = await tasksService.updateTaskStatus(
+        1,
+        TaskStatus.DONE,
+        mockUser,
+      );
       expect(save).toHaveBeenCalled();
       expect(result.status).toEqual(TaskStatus.DONE);
+    });
   });
 });
