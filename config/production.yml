@@ -1,2 +1,4 @@
+server:
+  origin: https://mj-task-management.s3.eu-central-1.amazonaws.com
 db:
   synchronize: false
