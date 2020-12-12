@@ -16,7 +16,7 @@ export class UserRepository extends Repository<User> {
     const user = new User();
     user.username = username;
     user.salt = salt;
-    user.password = await UserRepository.hashPassword(password, user.salt);
+    user.password = await this.hashPassword(password, user.salt);
     try {
       await user.save();
     } catch (error) {
@@ -41,7 +41,7 @@ export class UserRepository extends Repository<User> {
       return null;
     }
   }
-  private static async hashPassword(
+  private async hashPassword(
     password: string,
     salt: string,
   ): Promise<string> {
